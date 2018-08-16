@@ -1,0 +1,88 @@
+<DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Page Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" type="text/css" media="screen" href="styles/grid.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="styles/table.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="styles/modal.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="styles/main.css" />
+
+        <script src="dummy-data/menu.js"></script>
+        <script src="classes/MenuItem.js"></script>
+        <script src="classes/Bill.js"></script>
+        <script src="classes/RestTable.js"></script>
+        <script src="classes/Restaurant.js"></script>
+        <script src="main.js" defer></script>
+    </head>
+
+    <body>
+        <!-- New Table Modal -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <input id="number-of-patrons-field" type="number" value="1" />
+                <button onclick="submitModal()">Submit</button>
+            </div>
+        </div>
+
+        <!-- Bill Modal -->
+        <div id="bill-modal" class="modal">
+            <div class="modal-content">
+                <p id="bill-text"></p>
+                <button onclick="hideBillModal()">Ok</button>
+            </div>
+        </div>
+
+        <!-- Menu Modal -->
+        <div id="menu-modal" class="modal" onclick="hideMenuModal()">
+            <div class="modal-content">
+                <table id="restaurant-menu">
+                    <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <input id="floor-plan-width" type="number" onkeyup="updateFloorPlan()" />
+        <input id="floor-plan-height" type="number" onkeyup="updateFloorPlan()" />
+
+        <div id="floor-plan" class="grid-container"></div>
+
+        <nav id="context-menu" role="navigation" style="display: none; position: absolute">
+            <ul>
+                <li onclick="addTable()">
+                    <a href="#">Add Table</a>
+                </li>
+                <li onclick="removeTable()">
+                    <a href="#">Remove Table</a>
+                </li>
+                <li>
+                    <a href="#">Two</a>
+                    <ul class="dropdown">
+                        <li onclick="showModal()">
+                            <a href="#">Seat Table</a>
+                        </li>
+                        <li onclick="clearTable()">
+                            <a href="#">Clear Table</a>
+                        </li>
+                        <li onclick="showMenuModal()">
+                            <a href="#">Show Menu</a>
+                        </li>
+                    </ul>
+                </li>
+                <li onclick="showBillModal()">
+                    <a href="#">Show Bill</a>
+                </li>
+            </ul>
+        </nav>
+    </body>
+
+    </html>
