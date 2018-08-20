@@ -2,16 +2,20 @@ const app = {};
 app.tableMap = new Map();
 
 const mainGrid = document.getElementById('floor-plan');
-const restaurant = new Restaurant(8, 10);
+const restaurant = new Restaurant(10, 10);
 
-const showError = (errorMessage) => alert(errorMessage);
+const showError = (errorMessage) => {
+    alert(errorMessage);
+    hideContextMenu();
+};
 
 const getCoordsFromID = (cellID) => {
     return [cellID.split("-")[0], cellID.split("-")[1]];
 };
 
 const updateFloorPlan = () => {
-    restaurant.updateSize(document.getElementById('floor-plan-width').value, document.getElementById('floor-plan-height').value);
+    hideFormModal();
+    restaurant.updateSize(document.getElementById('restaurant-size').value, document.getElementById('restaurant-size').value);
     refreshGridDisplay(restaurant);
 }
 
@@ -22,6 +26,12 @@ const updateCell = (cell) => {
             ? 'Occupied (' + restTable.numberOfPatrons + ' seated) Bill: ' + restTable.getBillTotal()
             : 'Open Table'
         : '';
+    const image = document.createElement('img');
+    image.src = 'https://svgsilh.com/svg_v2/2715994.svg';
+    image.width = 50;
+    image.height = 50;
+    image.style['pointer-events'] = 'none';
+    cell.appendChild(image);
     hideContextMenu();
 }
 
@@ -47,11 +57,12 @@ const removeTable = () => {
     updateCell(app.currentCell);
 };
 
-const seatTable = (numberOfPatrons) => {
+const seatTable = () => {
+    hideFormModal();
     const thisTable = restaurant.getTable(getCoordsFromID(app.currentCell.id));
     if (!thisTable) return showError('No table exists to seat');
     if (thisTable.occupied) return showError('Clear table before seating');
-    thisTable.seatTable(numberOfPatrons);
+    thisTable.seatTable(document.getElementById('party-size').value);
     updateCell(app.currentCell);
 };
 
@@ -62,44 +73,18 @@ const clearTable = () => {
     updateCell(app.currentCell);
 };
 
-const addItemToBill = (itemName, itemPrice) => {
+const addItemToBill = (itemName) => {
+    const itemPrice = 50;
     const thisTable = restaurant.getTable(getCoordsFromID(app.currentCell.id));
     if (!thisTable) return showError('No table exists to add item to');
     if (!thisTable.occupied) return showError('Nobody is sitting at this table');
     thisTable.addItemToBill(itemName, itemPrice);
-    updateCell(app.currentCell);
 };
 
-const hideBillModal = () => document.getElementById('bill-modal').style.display = 'none';
-
-const showBillModal = () => {
+const removeItemFromBill = (itemName) => {
     const thisTable = restaurant.getTable(getCoordsFromID(app.currentCell.id));
-    if (!thisTable) return showError('No table exists to show bill');
-    document.getElementById('bill-modal').style.display = 'block';
-    document.getElementById('bill-text').innerHTML = thisTable.getBillText();
-};
-
-const hideMenuModal = () => document.getElementById('menu-modal').style.display = 'none';
-
-const showMenuModal = () => document.getElementById('menu-modal').style.display = 'block';
-
-const populateMenuModal = () => {
-    const menuTable = document.getElementById('restaurant-menu');
-
-    restaurantMenu.forEach((menuItem) => {
-        const tableRow = document.createElement('tr');
-
-        const nameColumn = document.createElement('td');
-        const priceColumn = document.createElement('td');
-        nameColumn.innerHTML = menuItem.name;
-        priceColumn.innerHTML = menuItem.price;
-
-        tableRow.onclick = () => { addItemToBill(menuItem.name, menuItem.price); }
-        tableRow.appendChild(nameColumn);
-        tableRow.appendChild(priceColumn);
-
-        menuTable.appendChild(tableRow);
-    });
+    if (!thisTable) return showError('No table exists to remove item from');
+    thisTable.removeItemFromBill(itemName);
 };
 
 const refreshGridDisplay = (thisRestaurant) => {
@@ -115,36 +100,55 @@ const refreshGridDisplay = (thisRestaurant) => {
         newCell.id = `cell-${Math.floor(i / thisRestaurant.tileWidth)}-${(i % thisRestaurant.tileWidth)}`;
         newCell.className = 'grid-item';
         newCell.onclick = showContextMenu;
+        newCell.style.height = Math.floor(80 / thisRestaurant.tileWidth) + 'vw';
         mainGrid.appendChild(newCell);
     }
 };
 
-refreshGridDisplay(restaurant);
-populateMenuModal();
+const showNewRestaurantModal = () => showFormModal(newRestaurantFormTemplate);
 
+const showSeatTableModal = () => showFormModal(seatTableFormTemplate);
 
-// Get the modal
-var modal = document.getElementById('myModal');
+const hideFormModal = () => document.getElementById('form-modal').style.display = 'none';
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-const showModal = () => {
-    modal.style.display = 'block';
-};
-
-const submitModal = () => {
-    seatTable(document.getElementById('number-of-patrons-field').value);
-    modal.style.display = 'none';
-};
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
+const showFormModal = (formTemplate) => {
+    const source = document.getElementById('form-template').innerHTML;
+    const template = Handlebars.compile(source); 
+    document.getElementById('form-div').innerHTML = template(formTemplate);
+    document.getElementById('form-modal').style.display = 'block';
 }
+
+const showMenuModal = () => {
+    const source = document.getElementById('menu-template').innerHTML;
+    const template = Handlebars.compile(source); 
+    restaurantMenuTemplate.menuItems.forEach((menuItem) => { menuItem.addToBill = `addItemToBill('${menuItem.name}')` });
+    document.getElementById('menu-div').innerHTML = template(restaurantMenuTemplate);
+    document.getElementById('menu-modal').style.display = 'block';
+};
+
+const hideMenuModal = () => document.getElementById('menu-modal').style.display = 'none';
+
+const showBillModal = () => {
+    const thisTable = restaurant.getTable(getCoordsFromID(app.currentCell.id));
+    if (!thisTable) return showError('No table exists to show bill');
+
+    const source = document.getElementById('bill-template').innerHTML;
+    const template = Handlebars.compile(source);
+
+    const data = { billItems: thisTable.getBill() };
+
+    data.billItems.forEach((billItem) => { billItem.removeFromBill = `removeItemFromBill('${billItem.name}')` });
+
+    const reducer = (accumulator, currentValue) => accumulator + currentValue.total;
+    data.grandTotal = data.billItems.reduce(reducer, 0);
+
+    document.getElementById('bill-div').innerHTML = template(data);
+    document.getElementById('bill-modal').style.display = 'block';
+};
+
+const hideBillModal = () => document.getElementById('bill-modal').style.display = 'none';
+
+showNewRestaurantModal();
 
 
 

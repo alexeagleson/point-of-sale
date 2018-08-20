@@ -8,7 +8,23 @@ class Bill {
     }
 
     addItem(itemName, itemPrice) {
+        for (const menuItem of this.menuItems) {
+            if (menuItem.name === itemName) {
+                menuItem.quantity += 1;
+                return;
+            }
+        }
         this.menuItems.push(new MenuItem(itemName, itemPrice));
+    }
+
+    removeItem(itemName) {
+        for (const menuItem of this.menuItems) {
+            if (menuItem.name === itemName && menuItem.quantity > 1) {
+                menuItem.quantity -= 1;
+                return;
+            }
+        }
+        this.menuItems = this.menuItems.filter(menuItem => menuItem.name !== itemName);
     }
 
     getTotal() {
@@ -19,11 +35,10 @@ class Bill {
         return billTotal;
     }
 
-    getText() {
-        let billText = '';
+    getBill() {
         this.menuItems.forEach((menuItem) => {
-            billText = billText.concat(menuItem.name + ' ');
+            menuItem.total = menuItem.totalPrice();
         });
-        return billText;
+        return this.menuItems;
     }
 }

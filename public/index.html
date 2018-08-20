@@ -12,7 +12,11 @@
         <link rel="stylesheet" type="text/css" media="screen" href="styles/modal.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/main.css" />
 
-        <script src="dummy-data/menu.js"></script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
+
+        <script src="template-data/templates.js"></script>
         <script src="classes/MenuItem.js"></script>
         <script src="classes/Bill.js"></script>
         <script src="classes/RestTable.js"></script>
@@ -21,6 +25,84 @@
     </head>
 
     <body>
+        <script id="form-template" type="text/x-handlebars-template">
+            <div id="form-modal" class="modal">
+                <div class="modal-content">
+                    {{#each inputFields}}
+                        <label for={{fieldID}}>{{fieldLabel}}</label>
+                        <input id={{fieldID}} type={{fieldType}} />
+                    {{/each}}
+                    <button onclick={{submitButton.buttonFunction}}>{{submitButton.buttonName}}</button>
+                </div>
+            </div>
+        </script>
+        <div id="form-div"></div>
+
+        <script id="menu-template" type="text/x-handlebars-template">
+            <div id="menu-modal" class="modal">
+                <div class="modal-content">
+                    <table>
+                        <thead> 
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Add to Bill</th>
+                        </thead> 
+                        <tbody>
+                            {{#menuItems}}
+                                <tr> 
+                                    <td>{{name}}</td>
+                                    <td>{{price}}</td>
+                                    <td>
+                                        <button onclick={{addToBill}}>Add to Bill</button>
+                                    </td>
+                                </tr>
+                            {{/menuItems}}
+                        </tbody> 
+                    </table>
+                    <button onclick="hideMenuModal()">Finished</button>
+                </div>
+            </div>
+        </script>
+        <div id="menu-div"></div>
+
+        <script id="bill-template" type="text/x-handlebars-template">
+            <div id="bill-modal" class="modal">
+                <div class="modal-content">
+                    <table>
+                        <thead> 
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Remove</th>
+                        </thead> 
+                        <tbody>
+                            {{#billItems}}
+                                <tr> 
+                                    <td>{{name}}</td>
+                                    <td>{{price}}</td>
+                                    <td>{{quantity}}</td>
+                                    <td>{{total}}</td>
+                                    <td>
+                                            <button onclick={{removeFromBill}}>Remove</button>
+                                    </td>
+                                </tr>
+                            {{/billItems}}
+                            <tr> 
+                                <td></td>
+                                <td></td>
+                                <td><strong>Grand Total</strong></td>
+                                <td>{{grandTotal}}</td>
+                                <td></td>
+                            </tr>
+                        </tbody> 
+                    </table>
+                    <button onclick="hideBillModal()">Finished</button>
+                </div>
+            </div>
+        </script>
+        <div id="bill-div"></div>
+
         <!-- New Table Modal -->
         <div id="myModal" class="modal">
             <div class="modal-content">
@@ -29,30 +111,6 @@
                 <button onclick="submitModal()">Submit</button>
             </div>
         </div>
-
-        <!-- Bill Modal -->
-        <div id="bill-modal" class="modal">
-            <div class="modal-content">
-                <p id="bill-text"></p>
-                <button onclick="hideBillModal()">Ok</button>
-            </div>
-        </div>
-
-        <!-- Menu Modal -->
-        <div id="menu-modal" class="modal" onclick="hideMenuModal()">
-            <div class="modal-content">
-                <table id="restaurant-menu">
-                    <tr>
-                        <th>Item</th>
-                        <th>Price</th>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-
-        <input id="floor-plan-width" type="number" onkeyup="updateFloorPlan()" />
-        <input id="floor-plan-height" type="number" onkeyup="updateFloorPlan()" />
 
         <div id="floor-plan" class="grid-container"></div>
 
@@ -67,7 +125,7 @@
                 <li>
                     <a href="#">Two</a>
                     <ul class="dropdown">
-                        <li onclick="showModal()">
+                        <li onclick="showSeatTableModal()">
                             <a href="#">Seat Table</a>
                         </li>
                         <li onclick="clearTable()">
@@ -83,6 +141,7 @@
                 </li>
             </ul>
         </nav>
+
     </body>
 
     </html>

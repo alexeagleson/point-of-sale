@@ -11,7 +11,7 @@ class Restaurant {
     }
 
     getTable(coords) {
-        return this.tableMap.get(`${coords[0]}-${coords[1]}`);;
+        return this.tableMap.get(`${coords[0]}-${coords[1]}`);
     }
 
     addNewTable(coords) {
