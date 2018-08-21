@@ -21,17 +21,18 @@ const updateFloorPlan = () => {
 
 const updateCell = (cell) => {
     const restTable = restaurant.getTable(getCoordsFromID(cell.id));
-    cell.innerHTML = restTable
-        ? restTable.occupied 
-            ? 'Occupied (' + restTable.numberOfPatrons + ' seated) Bill: ' + restTable.getBillTotal()
-            : 'Open Table'
-        : '';
+
     const image = document.createElement('img');
     image.src = 'https://svgsilh.com/svg_v2/2715994.svg';
-    image.width = 50;
-    image.height = 50;
-    image.style['pointer-events'] = 'none';
+    image.className = 'grid-item-image';
     cell.appendChild(image);
+
+    const topText = document.getElementById(`top-text ${cell.id}`);
+    topText.innerHTML = restTable.occupied ? `Occupied (${restTable.numberOfPatrons})` : 'Open';
+
+    const bottomText = document.getElementById(`bottom-text ${cell.id}`);
+    bottomText.innerHTML = restTable.occupied ? `Bill: ${restTable.getBillTotal()}` : '';
+
     hideContextMenu();
 }
 
@@ -79,6 +80,7 @@ const addItemToBill = (itemName) => {
     if (!thisTable) return showError('No table exists to add item to');
     if (!thisTable.occupied) return showError('Nobody is sitting at this table');
     thisTable.addItemToBill(itemName, itemPrice);
+    updateCell(app.currentCell);
 };
 
 const removeItemFromBill = (itemName) => {
@@ -94,6 +96,7 @@ const refreshGridDisplay = (thisRestaurant) => {
     let cssGridColumnsString = '';
     for (let i = 0; i < thisRestaurant.tileWidth; i += 1) cssGridColumnsString += columndWidth + ' ';
     mainGrid.style['grid-template-columns'] = cssGridColumnsString;
+    mainGrid.style['font-size'] = (10 / thisRestaurant.tileWidth) + 'em';
 
     for (let i = 0; i < (thisRestaurant.tileWidth * thisRestaurant.tileHeight); i += 1) {
         const newCell = document.createElement('div');
@@ -101,6 +104,17 @@ const refreshGridDisplay = (thisRestaurant) => {
         newCell.className = 'grid-item';
         newCell.onclick = showContextMenu;
         newCell.style.height = Math.floor(80 / thisRestaurant.tileWidth) + 'vw';
+
+        const topText = document.createElement('p');
+        topText.id = `top-text ${newCell.id}`;
+        topText.className = 'grid-item-text top';
+        newCell.appendChild(topText);
+    
+        const bottomText = document.createElement('p');
+        bottomText.id = `bottom-text ${newCell.id}`;
+        bottomText.className = 'grid-item-text bottom';
+        newCell.appendChild(bottomText);
+
         mainGrid.appendChild(newCell);
     }
 };

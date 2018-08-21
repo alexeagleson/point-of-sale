@@ -30,7 +30,7 @@ class Bill {
     getTotal() {
         let billTotal = 0;
         this.menuItems.forEach((menuItem) => {
-            billTotal += menuItem.price;
+            billTotal += (menuItem.price * menuItem.quantity);
         });
         return billTotal;
     }
