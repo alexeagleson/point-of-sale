@@ -1,4 +1,5 @@
 const newRestaurantFormTemplate = {
+    formHeader: 'Welcome to RestaurantApp',
     inputFields: [ {
         fieldID: 'restaurant-name',
         fieldLabel: 'Restaurant Name',

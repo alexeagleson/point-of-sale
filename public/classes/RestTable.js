@@ -25,11 +25,11 @@ class RestTable {
       this.bill.removeItem(itemName);
     }
 
-    getBillTotal() {
-      return this.bill.getTotal();
-    }
-
     getBill() {
       return this.bill.getBill();
+    }
+
+    getBillTotal() {
+      return this.bill.getBillTotal();
     }
   }

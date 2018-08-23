@@ -1,19 +1,15 @@
 table {
-    font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
 td, th {
-    border: 1px solid #dddddd;
+    border: 1px solid rgba(26, 147, 111, 1);
+    border-radius: 5px;
     text-align: left;
     padding: 8px;
 }
 
 tr:nth-child(even) {
-    background-color: #dddddd;
-}
-
-tr:hover {
-    background-color: #ffe134;
+    background-color: rgba(198, 218, 191, 1);
 }

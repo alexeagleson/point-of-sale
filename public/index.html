@@ -10,8 +10,8 @@
         <link rel="stylesheet" type="text/css" media="screen" href="styles/grid.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/table.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/modal.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="styles/context-menu.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/main.css" />
-
 
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
@@ -25,123 +25,136 @@
     </head>
 
     <body>
-        <script id="form-template" type="text/x-handlebars-template">
-            <div id="form-modal" class="modal">
-                <div class="modal-content">
-                    {{#each inputFields}}
-                        <label for={{fieldID}}>{{fieldLabel}}</label>
-                        <input id={{fieldID}} type={{fieldType}} />
-                    {{/each}}
-                    <button onclick={{submitButton.buttonFunction}}>{{submitButton.buttonName}}</button>
-                </div>
-            </div>
-        </script>
-        <div id="form-div"></div>
+        <div class="background">
 
-        <script id="menu-template" type="text/x-handlebars-template">
-            <div id="menu-modal" class="modal">
-                <div class="modal-content">
-                    <table>
-                        <thead> 
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Add to Bill</th>
-                        </thead> 
-                        <tbody>
-                            {{#menuItems}}
+        
+            <div id=header-container>
+                <center>
+                    <h1 id="main-header"></h1>
+                </center>
+            </div>
+
+
+            <script id="form-template" type="text/x-handlebars-template">
+                <div id="form-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="form-container">
+                            <h2>{{formHeader}}</h2>
+                            {{#each inputFields}}
+                                <div class="group">  
+                                    <input id={{fieldID}} type={{fieldType}} required>
+                                    <span class="highlight"></span>
+                                    <span class="bar"></span>
+                                    <label id={{fieldLabelID}} for={{fieldID}}>{{fieldLabel}}</label>
+                                </div>
+                            {{/each}}
+                            <p id="form-log" class="error-log"></p>
+                            <button onclick={{submitButton.buttonFunction}}>{{submitButton.buttonName}}</button>
+                        </div>
+                    </div>
+                </div>
+            </script>
+            <div id="form-div"></div>
+
+            <script id="menu-template" type="text/x-handlebars-template">
+                <div id="menu-modal" class="modal">
+                    <div class="modal-content">
+                        <table>
+                            <thead> 
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Add to Bill</th>
+                            </thead> 
+                            <tbody>
+                                {{#menuItems}}
+                                    <tr> 
+                                        <td>{{name}}</td>
+                                        <td>{{price}}</td>
+                                        <td>
+                                            <button onclick={{addToBill}}>Add to Bill</button>
+                                        </td>
+                                    </tr>
+                                {{/menuItems}}
+                            </tbody> 
+                        </table>
+                        <p id="menu-log"></p>
+                        <button onclick="clearAllMenus()">Done</button>
+                    </div>
+                </div>
+            </script>
+            <div id="menu-div"></div>
+
+            <script id="bill-template" type="text/x-handlebars-template">
+                <div id="bill-modal" class="modal">
+                    <div class="modal-content">
+                        <table>
+                            <thead> 
+                                <th>Name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th>Remove</th>
+                            </thead> 
+                            <tbody>
+                                {{#billItems}}
+                                    <tr> 
+                                        <td>{{name}}</td>
+                                        <td>{{price}}</td>
+                                        <td>{{quantity}}</td>
+                                        <td>{{total}}</td>
+                                        <td>
+                                                <button onclick={{removeFromBill}}>Remove</button>
+                                        </td>
+                                    </tr>
+                                {{/billItems}}
                                 <tr> 
-                                    <td>{{name}}</td>
-                                    <td>{{price}}</td>
-                                    <td>
-                                        <button onclick={{addToBill}}>Add to Bill</button>
-                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><strong>Grand Total</strong></td>
+                                    <td>{{grandTotal}}</td>
+                                    <td></td>
                                 </tr>
-                            {{/menuItems}}
-                        </tbody> 
-                    </table>
-                    <button onclick="hideMenuModal()">Finished</button>
+                            </tbody> 
+                        </table>
+                        <p id="bill-log"></p>
+                        <button onclick="clearAllMenus()">Done</button>
+                        <button onclick="clearTable()">Pay Bill</button>
+                    </div>
                 </div>
-            </div>
-        </script>
-        <div id="menu-div"></div>
+            </script>
+            <div id="bill-div"></div>
 
-        <script id="bill-template" type="text/x-handlebars-template">
-            <div id="bill-modal" class="modal">
-                <div class="modal-content">
-                    <table>
-                        <thead> 
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Remove</th>
-                        </thead> 
-                        <tbody>
-                            {{#billItems}}
-                                <tr> 
-                                    <td>{{name}}</td>
-                                    <td>{{price}}</td>
-                                    <td>{{quantity}}</td>
-                                    <td>{{total}}</td>
-                                    <td>
-                                            <button onclick={{removeFromBill}}>Remove</button>
-                                    </td>
-                                </tr>
-                            {{/billItems}}
-                            <tr> 
-                                <td></td>
-                                <td></td>
-                                <td><strong>Grand Total</strong></td>
-                                <td>{{grandTotal}}</td>
-                                <td></td>
-                            </tr>
-                        </tbody> 
-                    </table>
-                    <button onclick="hideBillModal()">Finished</button>
-                </div>
-            </div>
-        </script>
-        <div id="bill-div"></div>
 
-        <!-- New Table Modal -->
-        <div id="myModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <input id="number-of-patrons-field" type="number" value="1" />
-                <button onclick="submitModal()">Submit</button>
-            </div>
-        </div>
-
-        <div id="floor-plan" class="grid-container"></div>
-
-        <nav id="context-menu" role="navigation" style="display: none; position: absolute">
-            <ul>
-                <li onclick="addTable()">
-                    <a href="#">Add Table</a>
-                </li>
-                <li onclick="removeTable()">
-                    <a href="#">Remove Table</a>
-                </li>
-                <li>
-                    <a href="#">Two</a>
-                    <ul class="dropdown">
-                        <li onclick="showSeatTableModal()">
-                            <a href="#">Seat Table</a>
-                        </li>
-                        <li onclick="clearTable()">
-                            <a href="#">Clear Table</a>
-                        </li>
-                        <li onclick="showMenuModal()">
-                            <a href="#">Show Menu</a>
-                        </li>
+            <script id="context-template" type="text/x-handlebars-template">
+                <div id="context-menu" style="display: none; position: absolute; z-index: 1;">
+                    <ul>
+                        {{#if tableExists}}
+                            {{#if tableOccupied}}
+                                <li><a onclick="showMenuModal()">Menu</a></li>
+                                <li><a onclick="showBillModal()">Bill</a></li>
+                            {{else}}
+                                <li class="dropdown">
+                                    <a class="dropbtn">Seat Table</a>
+                                    <div class="dropdown-content">
+                                        <a onclick="seatTable(1)">1</a>
+                                        <a onclick="seatTable(2)">2</a>
+                                        <a onclick="seatTable(3)">3</a>
+                                        <a onclick="seatTable(4)">4</a>
+                                        <a onclick="showSeatTableModal()">More...</a>
+                                    </div>
+                                </li>
+                                <li><a onclick="removeTable()">Remove Table</a></li>
+                            {{/if}}
+                        {{else}}
+                            <li><a onclick="addTable()">Add Table</a></li>
+                        {{/if}}
                     </ul>
-                </li>
-                <li onclick="showBillModal()">
-                    <a href="#">Show Bill</a>
-                </li>
-            </ul>
-        </nav>
+                </div>
+            </script>
+            <div id="context-div"></div>
 
+            <div id="floor-plan" class="grid-container"></div>
+        </div>
     </body>
 
     </html>

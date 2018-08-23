@@ -27,18 +27,16 @@ class Bill {
         this.menuItems = this.menuItems.filter(menuItem => menuItem.name !== itemName);
     }
 
-    getTotal() {
-        let billTotal = 0;
-        this.menuItems.forEach((menuItem) => {
-            billTotal += (menuItem.price * menuItem.quantity);
-        });
-        return billTotal;
-    }
-
     getBill() {
         this.menuItems.forEach((menuItem) => {
             menuItem.total = menuItem.totalPrice();
         });
         return this.menuItems;
     }
+
+    getBillTotal() {
+        const reducer = (accumulator, currentValue) => accumulator + currentValue.total;
+        return this.getBill().reduce(reducer, 0);
+    }
+    
 }
