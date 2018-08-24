@@ -4,13 +4,14 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Page Title</title>
+        <title>Restaurant App</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" type="text/css" media="screen" href="styles/grid.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/table.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/modal.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/context-menu.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="styles/header.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/main.css" />
 
 
@@ -26,14 +27,14 @@
 
     <body>
         <div class="background">
-
-        
-            <div id=header-container>
-                <center>
-                    <h1 id="main-header"></h1>
-                </center>
+            <div class="header">
+                <span id="main-header" class="logo"></span>
+                <div class="header-right">
+                    <span id="total-tables">Occupied Tables: 0</span>
+                    <br>
+                    <span id="total-sales">Total Sales: $0</span>
+                </div>
             </div>
-
 
             <script id="form-template" type="text/x-handlebars-template">
                 <div id="form-modal" class="modal">

@@ -11,8 +11,8 @@ background-color: rgb(237, 238, 237);
 
 
 
-
-/* * {
+/* 
+* {
     border: 1px solid red;
 } */
 
@@ -20,13 +20,6 @@ body {
     background-color: rgba(198, 218, 191, 1);
     font-family: Arial, Tahoma, Geneva, sans-serif;
     color: rgba(17, 75, 95, 1);
-}
-
-#header-container {
-    color: rgba(17, 75, 95, 1);
-    font-size: 5em;
-    font-weight: lighter;
-    /* border: 1px solid black; */
 }
 
 .error-log {

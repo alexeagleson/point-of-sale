@@ -1,5 +1,5 @@
 const app = {};
-app.tableMap = new Map();
+app.totalSales = 0;
 
 const mainGrid = document.getElementById('floor-plan');
 const restaurant = new Restaurant(10, 10);
@@ -26,6 +26,11 @@ const getCoordsFromID = (cellID) => {
     return [cellID.split("-")[0], cellID.split("-")[1]];
 };
 
+const getTableNumFromID = (cellID) => {
+    const tableCoords = getCoordsFromID(cellID);
+    return `${(parseInt(tableCoords[0]) + 1)}-${(parseInt(tableCoords[1]) + 1)}`;
+};
+
 const updateFloorPlan = () => {
     const restaurantSize = document.getElementById('restaurant-size').value;
     const restaurantName = document.getElementById('restaurant-name').value;
@@ -36,7 +41,7 @@ const updateFloorPlan = () => {
     errorCheck = validateNumber(restaurantSize, 'Restaurant Size', 5, 20);
     if (typeof errorCheck === 'string') { document.getElementById('form-log').innerHTML = errorCheck; return; }
 
-    hideFormModal();
+    clearAllMenus();
     document.getElementById('main-header').innerHTML = restaurantName;
     restaurant.updateSize(restaurantSize, restaurantSize);
     refreshGridDisplay(restaurant);
@@ -44,22 +49,29 @@ const updateFloorPlan = () => {
 
 const updateCell = (cell) => {
     const restTable = restaurant.getTable(getCoordsFromID(cell.id));
+    const tableNumber = getTableNumFromID(cell.id);
 
     const imageIcon = document.getElementById(`image-icon ${cell.id}`);
     imageIcon.style.display = restTable ? 'block' : 'none';
-
-
     imageIcon.src = (restTable && restTable.occupied) ? 'https://svgsilh.com/svg/2715994-f44336.svg' : 'https://svgsilh.com/svg_v2/2715994.svg';
 
     const topText = document.getElementById(`top-text ${cell.id}`);
     topText.innerHTML = restTable
         ? restTable.occupied
-            ? `Party of ${restTable.numberOfPatrons}`
+            ? `Table ${tableNumber}: Party of ${restTable.numberOfPatrons} ($${restTable.getBillTotal()})`
             : 'Open'
         : '';
 
-    const bottomText = document.getElementById(`bottom-text ${cell.id}`);
-    bottomText.innerHTML = restTable && restTable.occupied ? `Bill: ${restTable.getBillTotal()}` : '';
+    let totalTables = 0;
+    let occupiedTables = 0;
+    restaurant.tableMap.forEach((tableObject) => {
+        totalTables += 1;
+        if (tableObject.occupied) occupiedTables += 1;
+    });
+
+    document.getElementById('total-tables').innerHTML = `Occupied Tables: ${occupiedTables}/${totalTables}`;
+    document.getElementById('total-sales').innerHTML = `Total Sales: $${app.totalSales}`;
+
 
     hideContextMenu();
 }
@@ -106,11 +118,16 @@ const removeTable = () => {
 };
 
 const seatTable = (numberOfPatrons) => {
-    clearAllMenus();
+    
     const thisTable = restaurant.getTable(getCoordsFromID(app.currentCell.id));
     if (!thisTable) return showError('No table exists to seat');
     if (thisTable.occupied) return showError('Clear table before seating');
     numberOfPatrons = numberOfPatrons || document.getElementById('party-size').value;
+
+    let errorCheck = validateNumber(numberOfPatrons, 'Party Size', 1, 20);
+    if (typeof errorCheck === 'string') { document.getElementById('form-log').innerHTML = errorCheck; return; }
+
+    clearAllMenus();
     thisTable.seatTable(numberOfPatrons);
     updateCell(app.currentCell);
 };
@@ -119,6 +136,7 @@ const clearTable = () => {
     clearAllMenus()
     const thisTable = restaurant.getTable(getCoordsFromID(app.currentCell.id));
     if (!thisTable) return showError('No table exists to clear');
+    app.totalSales += thisTable.getBillTotal();
     thisTable.clearTable();
     updateCell(app.currentCell);
 };
@@ -167,11 +185,6 @@ const refreshGridDisplay = (thisRestaurant) => {
         image.className = 'grid-item-image';
         image.style.display = 'none';
         newCell.appendChild(image);
-    
-        const bottomText = document.createElement('p');
-        bottomText.id = `bottom-text ${newCell.id}`;
-        bottomText.className = 'grid-item-text bottom';
-        newCell.appendChild(bottomText);
 
         mainGrid.appendChild(newCell);
     }
@@ -181,17 +194,18 @@ const showNewRestaurantModal = () => showFormModal(newRestaurantFormTemplate);
 
 const showSeatTableModal = () => showFormModal(seatTableFormTemplate);
 
-const hideFormModal = () => {
-    const formModal = document.getElementById('form-modal');
-    if (formModal) formModal.style.display = 'none';
-};
-
 const showFormModal = (formTemplate) => {
     clearAllMenus();
+    if (formTemplate.cannotCancel) app.formCannotCancel = true;
     const source = document.getElementById('form-template').innerHTML;
     const template = Handlebars.compile(source); 
     document.getElementById('form-div').innerHTML = template(formTemplate);
     document.getElementById('form-modal').style.display = 'block';
+};
+
+const hideFormModal = () => {
+    const formModal = document.getElementById('form-modal');
+    if (formModal) formModal.style.display = 'none';
 };
 
 const showMenuModal = () => {
@@ -233,11 +247,14 @@ const clearAllMenus = () => {
     hideContextMenu();
     hideMenuModal();
     hideBillModal();
+    hideFormModal();
+    app.formCannotCancel = false;
 };
 
 
 window.addEventListener('mouseup', (e) => {
-    if (e.target.className === 'background' || e.target.className === 'modal') {
+    if (app.formCannotCancel) return;
+    if (e.target.className === 'background' || e.target.className === 'modal' || e.target.className === 'header' || e.target.className === 'grid-container') {
         clearAllMenus();
     }
 });
