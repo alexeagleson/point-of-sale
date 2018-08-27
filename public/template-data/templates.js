@@ -14,10 +14,10 @@ const newRestaurantFormTemplate = {
 };
 
 const seatTableFormTemplate = {
-    formHeader: 'Enter party size (1-20)',
+    formHeader: 'Enter party size',
     inputFields: [ {
         fieldID: 'party-size',
-        fieldLabel: 'Party Size',
+        fieldLabel: 'Party Size (1-20)',
         fieldType: 'number',
     }],
     submitButton: { 'buttonName': 'Confirm', 'buttonFunction': 'seatTable()' },
