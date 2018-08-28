@@ -6,7 +6,7 @@ const newRestaurantFormTemplate = {
         fieldType: 'text',
     } , {
         fieldID: 'restaurant-size',
-        fieldLabel: 'Diameter in metres (5-20)',
+        fieldLabel: 'Diameter in metres (5-15)',
         fieldType: 'number',
     }],
     submitButton: { 'buttonName': 'Confirm', 'buttonFunction': 'updateFloorPlan()' },

@@ -26,7 +26,7 @@ const updateFloorPlan = () => {
         document.getElementById('restaurant-name').value = '';
         return;
     }
-    errorCheck = validateNumber(restaurantSize, 'Restaurant Size', 5, 20);
+    errorCheck = validateNumber(restaurantSize, 'Restaurant Size', 5, 15);
     if (typeof errorCheck === 'string') {
         document.getElementById('form-log').innerHTML = errorCheck;
         document.getElementById('restaurant-size').value = '';
