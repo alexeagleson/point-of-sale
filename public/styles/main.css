@@ -8,10 +8,9 @@ body {
     color: red;
 }
 
-test {
+.color-scheme {
     color: #262626;
     color: #3f3f3f;
     color: #dcdcdc;
     color: #f5f5f5;
-
 }

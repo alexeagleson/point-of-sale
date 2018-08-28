@@ -46,6 +46,10 @@ button:active {
   background-color: #f5f5f5;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 /* form starting stylings ------------------------------- */
 .group {
   position: relative;
