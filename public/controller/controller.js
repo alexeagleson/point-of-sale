@@ -15,6 +15,31 @@ const getContextMenu = (e) => {
     displayContextMenu(contextMenuTemplate, e);
 };
 
+const updateFloorPlan = () => {
+    const restaurantSize = document.getElementById('restaurant-size').value;
+    const restaurantName = document.getElementById('restaurant-name').value;
+
+    // Form validation - cancels (returns) if check fails.
+    let errorCheck = validateTextField(restaurantName, 'Restaurant Name');
+    if (typeof errorCheck === 'string') {
+        document.getElementById('form-log').innerHTML = errorCheck;
+        document.getElementById('restaurant-name').value = '';
+        return;
+    }
+    errorCheck = validateNumber(restaurantSize, 'Restaurant Size', 5, 20);
+    if (typeof errorCheck === 'string') {
+        document.getElementById('form-log').innerHTML = errorCheck;
+        document.getElementById('restaurant-size').value = '';
+        return;
+    }
+
+    clearAllMenus();
+    document.getElementById('main-header').innerHTML = restaurantName;
+    restaurant.updateSize(restaurantSize, restaurantSize);
+    refreshGridDisplay(restaurant);
+}
+
+
 const addTable = () => {
     restaurant.addNewTable(getCoordsFromID(app.currentCell.id));
     updateCell(app.currentCell);
@@ -32,7 +57,11 @@ const seatTable = (numberOfPatrons) => {
     numberOfPatrons = numberOfPatrons || document.getElementById('party-size').value;
 
     let errorCheck = validateNumber(numberOfPatrons, 'Party Size', 1, 20);
-    if (typeof errorCheck === 'string') { document.getElementById('form-log').innerHTML = errorCheck; return; }
+    if (typeof errorCheck === 'string') {
+        document.getElementById('party-size').value = '';
+        document.getElementById('form-log').innerHTML = errorCheck;
+        return;
+    }
 
     clearAllMenus();
     thisTable.seatTable(numberOfPatrons);
@@ -49,13 +78,13 @@ const clearTable = () => {
 };
 
 const addItemToBill = (itemName) => {
-    const itemPrice = 50;
     const thisTable = restaurant.getTable(getCoordsFromID(app.currentCell.id));
     if (!thisTable) return showError('No table exists to add item to');
     if (!thisTable.occupied) return showError('Nobody is sitting at this table');
+    const itemPrice = restaurantMenuTemplate.menuItems.find((menuItem) => menuItem.name === itemName).price;
     thisTable.addItemToBill(itemName, itemPrice);
     updateCell(app.currentCell);
-    document.getElementById('menu-log').innerHTML = `${itemName} added to bill (total: ${thisTable.getBillTotal()} )`;
+    document.getElementById('menu-log').innerHTML = `${itemName} added to bill (total: $${thisTable.getBillTotal()} )`;
 };
 
 const removeItemFromBill = (itemName) => {

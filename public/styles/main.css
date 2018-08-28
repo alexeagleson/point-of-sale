@@ -1,18 +1,17 @@
 body {
-    background-color: rgba(198, 218, 191, 1);
-    font-family: Arial, Tahoma, Geneva, sans-serif;
-    color: rgba(17, 75, 95, 1);
+    background-color: #f5f5f5;
+    font-family: Tahoma, Geneva, sans-serif;
+    color: #3f3f3f;
 }
 
 .error-log {
-    color: darkred;
+    color: red;
 }
 
 test {
-    color: rgba(17, 75, 95, 1);
-    color: rgba(26, 147, 111, 1);
-    color: rgba(136, 212, 152, 1);
-    color: rgba(198, 218, 191, 1);
-    color: rgba(243, 233, 210, 1);
-    color: rgba(243, 233, 210, 0.5);
+    color: #262626;
+    color: #3f3f3f;
+    color: #dcdcdc;
+    color: #f5f5f5;
+
 }

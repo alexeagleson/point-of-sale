@@ -11,7 +11,7 @@
         <link rel="stylesheet" type="text/css" media="screen" href="styles/table.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/modal.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/context-menu.css" />
-        <link rel="stylesheet" type="text/css" media="screen" href="styles/header.css" />
+        <link rel="stylesheet" type="text/css" media="screen" href="styles/h.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="styles/main.css" />
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
@@ -36,13 +36,10 @@
 
     <body>
         <div class="background">
-            <div class="header">
-                <span id="main-header" class="logo"></span>
-                <div class="header-right">
-                    <span id="total-tables">Occupied Tables: 0</span>
-                    <br>
-                    <span id="total-sales">Total Sales: $0</span>
-                </div>
+            <div class="header-wrapper">
+                <div id="main-header" class="one"></div>
+                <div id="total-tables" class="two">Occupied Tables: 0</div>
+                <div id="total-sales" class="three">Total Sales: $0</div>
             </div>
 
             <script id="form-template" type="text/x-handlebars-template">
@@ -72,14 +69,14 @@
                         <table>
                             <thead> 
                                 <th>Name</th>
-                                <th>Price</th>
+                                <th class="center-text">Price</th>
                                 <th>Add to Bill</th>
                             </thead> 
                             <tbody>
                                 {{#menuItems}}
                                     <tr> 
                                         <td>{{name}}</td>
-                                        <td>{{price}}</td>
+                                        <td class="center-text">${{price}}</td>
                                         <td>
                                             <button onclick={{addToBill}}>Add to Bill</button>
                                         </td>
@@ -100,18 +97,18 @@
                         <table>
                             <thead> 
                                 <th>Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <th class="center-text">Price</th>
+                                <th class="center-text">Quantity</th>
+                                <th class="center-text">Total</th>
                                 <th>Remove</th>
                             </thead> 
                             <tbody>
                                 {{#billItems}}
                                     <tr> 
                                         <td>{{name}}</td>
-                                        <td>{{price}}</td>
-                                        <td>{{quantity}}</td>
-                                        <td>{{total}}</td>
+                                        <td class="center-text">${{price}}</td>
+                                        <td class="center-text">{{quantity}}</td>
+                                        <td class="center-text">${{total}}</td>
                                         <td>
                                                 <button onclick={{removeFromBill}}>Remove</button>
                                         </td>
@@ -120,8 +117,8 @@
                                 <tr> 
                                     <td></td>
                                     <td></td>
-                                    <td><strong>Grand Total</strong></td>
-                                    <td>{{grandTotal}}</td>
+                                    <td class="center-text"><strong>Grand Total</strong></td>
+                                    <td class="center-text">${{grandTotal}}</td>
                                     <td></td>
                                 </tr>
                             </tbody> 

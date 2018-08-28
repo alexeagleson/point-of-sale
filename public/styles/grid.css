@@ -10,9 +10,9 @@
 
 .grid-item {
     position: relative;
-    background-color: rgba(243, 233, 210, 1);
+    background-color: white;
     border: 1px solid rgba(0, 0, 0, 0.8);
-    color: black;
+    color: #3f3f3f;
     box-sizing: border-box;
     border-radius: 5px;
 }
@@ -27,7 +27,7 @@
 }
 
 .grid-item:hover {
-    background-color: rgba(243, 233, 210, 0.75);
+    background-color: #dcdcdc;
 }
 
 .grid-item-text {
@@ -38,7 +38,6 @@
     width: 100%;
     margin: auto;
     margin-top: 5px;
-    font-size: 0.9vw;
 }
 
 .top {

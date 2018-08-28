@@ -1,7 +1,7 @@
 /* Style the header with a grey background and some padding */
 .header {
     overflow: hidden;
-    background-color: rgba(17, 75, 95, 1);
+    background-color: #3f3f3f;
     padding: 5px;
     border-radius: 5px;
     margin-bottom: 20px;
@@ -10,7 +10,7 @@
   /* Style the header links */
   .header span {
     float: left;
-    color: rgba(243, 233, 210, 1);
+    color: #dcdcdc;
     text-align: center;
     text-decoration: none;
     font-size: 2vw; 
@@ -49,3 +49,7 @@
       float: none;
     } */
   }
+
+
+
+  

@@ -8,15 +8,15 @@
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  background-color: rgba(0, 0, 0, 0.4); /* #dcdcdc w/ opacity */
 }
 
 /* Modal Content/Box */
 .modal-content {
-  background-color: rgba(243, 233, 210, 1);
+  background-color: white;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
-  border: 1px solid rgba(17, 75, 95, 1);
+  border: 1px solid #3f3f3f;
   width: 40%; /* Could be more or less, depending on screen size */
   border-radius: 10px;
 }
@@ -37,13 +37,13 @@ h2 {
 button {
   font-size: 1em;
   padding: 8px;
-  background-color: rgba(243, 233, 210, 1);
+  background-color: white;
   border-radius: 5px;
-  color: rgba(17, 75, 95, 1);
+  color: #3f3f3f;
 }
 
 button:active {
-  background-color: rgba(198, 218, 191, 1);
+  background-color: #f5f5f5;
 }
 
 /* form starting stylings ------------------------------- */
@@ -59,7 +59,7 @@ input {
   width: 100%;
   border: none;
   border-radius: 3px;
-  border-bottom: 1px solid rgba(26, 147, 111, 1);
+  border-bottom: 1px solid gray;
 }
 
 input:focus {
@@ -68,7 +68,7 @@ input:focus {
 
 /* LABEL ======================================= */
 label {
-  color: rgba(26, 147, 111, 1);
+  color: gray;
   font-size: 18px;
   font-weight: normal;
   position: absolute;
@@ -85,7 +85,7 @@ input:focus ~ label,
 input:valid ~ label {
   top: -20px;
   font-size: 14px;
-  color:rgba(17, 75, 95, 1);
+  color:#3f3f3f;
 }
 
 /* BOTTOM BARS ================================= */
@@ -101,7 +101,7 @@ input:valid ~ label {
   width: 0;
   bottom: 1px;
   position: absolute;
-  background: rgba(136, 212, 152, 1);
+  background: #dcdcdc;
   transition: 0.2s ease all;
   -moz-transition: 0.2s ease all;
   -webkit-transition: 0.2s ease all;
@@ -123,7 +123,7 @@ input:focus ~ .bar:after {
 /* Use a media query to add a breakpoint at 800px: */
 @media screen and (max-width: 800px) {
   .modal-content {
-    width: 70%; /* Could be more or less, depending on screen size */
+    width: 70%;
   }
 
   .form-container {

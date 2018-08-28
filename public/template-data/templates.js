@@ -26,28 +26,28 @@ const seatTableFormTemplate = {
 
 const restaurantMenuTemplate = {
     menuItems: [{
-        name: 'Cheese',
-        price: 50,
+        name: 'Chicken',
+        price: 11,
     } , {
-        name: 'Butt',
-        price: 50,
+        name: 'Steak',
+        price: 15,
     } , {
-        name: 'Whatever',
-        price: 50,
+        name: 'Salad',
+        price: 7,
     } , {
-        name: 'Stuff',
-        price: 50,
+        name: 'Nachos',
+        price: 12,
     } , {
-        name: 'Ok',
-        price: 50,
+        name: 'Cheeseburger',
+        price: 8,
     } , {
-        name: 'Whatever',
-        price: 50,
+        name: 'French Fries',
+        price: 5,
     } , {
-        name: 'Stuff',
-        price: 50,
+        name: 'Milk',
+        price: 3,
     } , {
-        name: 'Ok',
-        price: 50,
+        name: 'Soda',
+        price: 2,
     }]
 };
