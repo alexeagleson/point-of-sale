@@ -13,3 +13,14 @@ td, th {
 tr:nth-child(even) {
     background-color: rgba(198, 218, 191, 1);
 }
+
+/* Use a media query to add a breakpoint at 800px: */
+@media screen and (max-width: 800px) {
+    table {
+        font-size: 0.75em;
+    }
+
+    td, th {
+        padding: 3px;
+    }
+}

@@ -19,10 +19,10 @@
 
 .grid-item-image {
     pointer-events: none;
-    width: 70%;
-    height: 70%;
+    width: 60%;
+    height: 60%;
     position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
+    top: 30%; left: 0; bottom: 0; right: 0;
     margin: auto;
 }
 
@@ -38,6 +38,7 @@
     width: 100%;
     margin: auto;
     margin-top: 5px;
+    font-size: 0.9vw;
 }
 
 .top {
@@ -46,4 +47,17 @@
 
 .bottom {
     bottom: 0;
+}
+
+
+@media screen and (max-width: 1366px) {
+    .grid-item-text {
+        display: none;
+    }
+
+    .grid-item-image {
+        width: 80%;
+        height: 80%;
+        top: 0;
+    }
 }

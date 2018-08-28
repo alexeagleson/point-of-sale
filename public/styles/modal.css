@@ -21,14 +21,17 @@
   border-radius: 10px;
 }
 
-/* basic stylings ------------------------------------------ */
-
 .form-container {
   padding: 20px;
   display: block;
   width: 70%;
   margin: auto;
-  /* border: 2px solid red; */
+}
+
+/* basic stylings ------------------------------------------ */
+h2 {
+  font-size: 2vw;
+  padding-bottom: 20px;
 }
 
 button {
@@ -37,10 +40,6 @@ button {
   background-color: rgba(243, 233, 210, 1);
   border-radius: 5px;
   color: rgba(17, 75, 95, 1);
-}
-
-h2 {
-  padding-bottom: 20px;
 }
 
 button:active {
@@ -52,6 +51,7 @@ button:active {
   position: relative;
   margin-bottom: 45px;
 }
+
 input {
   font-size: 18px;
   padding: 10px 10px 10px 5px;
@@ -61,6 +61,7 @@ input {
   border-radius: 3px;
   border-bottom: 1px solid rgba(26, 147, 111, 1);
 }
+
 input:focus {
   outline: none;
 }
@@ -116,4 +117,32 @@ input:valid ~ label {
 input:focus ~ .bar:before,
 input:focus ~ .bar:after {
   width: 50%;
+}
+
+
+/* Use a media query to add a breakpoint at 800px: */
+@media screen and (max-width: 800px) {
+  .modal-content {
+    width: 70%; /* Could be more or less, depending on screen size */
+  }
+
+  .form-container {
+    padding: 20px;
+    display: block;
+    width: 85%;
+    margin: auto;
+  }
+
+  h2 {
+    font-size: 4vw;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 1em;
+    padding: 3px;
+  }
 }
